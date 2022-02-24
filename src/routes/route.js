@@ -1,64 +1,82 @@
 
 const express = require('express');
-//const lodash = require('lodash')
 const router = express.Router();
 
 
 
-router.get('/students/:name', function(req, res) {
-    let studentName = req.params.name
-    console.log(studentName)
-    res.send(studentName)
-})
+// router.get('/get-query-1',function(req,res){
+//     let data = req.query
+//     console.log(data)
+//     res.send({data:data,status:true})
+// })
 
-router.get('/movies',function(req,res){
-    res.send('["fuckery","delhi6","rockstar","dabang","suryawansh"]')
-});
-
-
-
-
-
-
-
-
-router.get('/movies/:movieId',function(req,res){
-    mov=["fuckrey","delhi","dabang","rockstar","suryawansh"]
-let value=req.params.movieId;
-if(value>mov.length-1){
-    res.send('"doesnt exit')
-}else{
-    req.send(mov[value])
-}
-})
+// let arr=[1,2,3,4,5,6,7,8]
+// router.get('/get-query-2',function(req,res){
+//     let input=req.query.input
+//     let finalArr=[]
+//     for(i=0;i<=arr.length;i++){
+//         if(input<arr[i]){
+//             return finalArr.push(arr[i])
+//             //res.send(data:finalArr,status:true)
+//         }
+//         //res.send({data:finalArr,status:true})
+//     }
+//     res.send({data:finalArr,status:true})
+// })
 
 
 
 
 
-
-
-
-
-
-router.get('/moviez',function(req,res){
-    res.send([{id:1,name:'the shining'},{id:2,name:'incendies'},{id:3,name:'3 idiotd'},{id:4,name:'shersha'}])
-});
-
-
-
-router.get('/films/:filmId',function(req,res){
-    let movi=[{id:1,name:'the shining'},{id:2,name:'incendies'},{id:3,name:'3 idiotd'},
-    let value=req.params.filmId;
-    let found=false;
-    for(i=0;i<movi.length;i++){
-        found=trueres.send(movie[i])
-        break
+let persons = [
+    {
+        name: "PK",
+        age: 10,
+        votingStatus: false
+    },
+    {
+        name: "SK",
+        age: 20,
+        votingStatus: false
+    },
+    {
+        name: "AA",
+        age: 70,
+        votingStatus: false
+    },
+    {
+        name: "SC",
+        age: 5,
+        votingStatus: false
+    },
+    {
+        name: "HO",
+        age: 40,
+        votingStatus: false
     }
-}if(found==false){
-    res.send('"movie name doesnt exit"')
-});
+]
 
+router.post("/election", function (req, res) {
+    let votingAge = req.query.votingAge
+
+    let arr=[];
+    for (let i = 0; i < persons.length; i++) {
+
+        if (persons[i].age > votingAge) {
+        
+            persons[i].votingStatus = true
+            arr.push(persons[i])
+        }
+    }
+if (arr.length>0)
+{
+    return res.send(arr)
+}
+else{
+    return res.send("no member found above this age")
+}
+
+})
 
 
 
