@@ -1,24 +1,61 @@
-const { count } = require("console")
-const authorModel = require("../models/authorModel")
-const bookModel= require("../models/bookModel")
+const { query } = require('express')
 
-const createBook= async function (req, res) {
-    let book = req.body
-    let bookCreated = await bookModel.create(book)
-    res.send({data: bookCreated})
+const bookmodel=require('../models/bookmodel')
+const authormodel=require('../models/authorsmodel')
+const publisherModel=require('../models/publisherModel')
+const authorsmodel = require('../models/authorsmodel')
+
+
+const createBooks= async function(req, res) {
+let books=req.body
+let authorId=books.author_id
+let publisherId=books.publisher_id
+
+   
+
+    if(!authorId) return res.send('The request is not valid as the author details are required.')
+
+    //validation b
+    let author = await authormodel.findById(authorId)
+    if(!author) return res.send('The request is not valid as no author is present with the given author id')
+
+    //validation c
+    if(!publisherId) return res.send('The request is not valid as the publisher details are required.') 
+
+    //validation d
+    let publisher = await publisherModel.findById(publisherId)
+    if(!publisher) return res.send('The request is not valid as no publisher is present with the given publisher id')
+
+    let bookCreated = await bookmodel.create(books)
+    return res.send({data: bookCreated})
 }
 
-const getBooksData= async function (req, res) {
-    let books = await bookModel.find()
-    res.send({data: books})
+
+
+
+const bookByAuthorPublisher=async function(req,res){
+    let bookAuthor=await bookmodel.find().populate('author_id publisher_id')
+    res.send({msg:bookAuthor})
 }
 
-const getBooksWithAuthorDetails = async function (req, res) {
-    let specificBook = await bookModel.find().populate('author_id')
-    res.send({data: specificBook})
+let updatedValuePublisher=async function(req,res){
+    let updated=await publisherModel.updateMany(
+        {$or:[{_id:"621f5ceb4a6d8960b55feee2"},{_id:"6220bfeffdaacf40f31ff815"}]},
+        {$set:{isHardCover:"true"}}
+        )
+        res.send({msg:updated})
 
-}
+    }
 
-module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
-module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
+    let updatedValueAuthor=async function(req,res){
+        let increasedRating=await authorsmodel.updateMany({rating:{$gt:3.5}},{$inc:{price:+10}})
+        res.send({msg:increasedRating})
+    }
+
+
+
+    
+    module.exports.createBooks=createBooks
+    module.exports.bookByAuthorPublisher= bookByAuthorPublisher
+    module.exports.updatedValue=updatedValuePublisher
+    module.exports.updatedValueAuthor=updatedValueAuthor
