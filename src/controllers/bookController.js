@@ -48,7 +48,7 @@ let updatedValuePublisher=async function(req,res){
     }
 
     let updatedValueAuthor=async function(req,res){
-        let increasedRating=await authorsmodel.updateMany({rating:{$gt:3.5}},{$inc:{price:+10}})
+        let increasedRating=await auth({rating:{$gt:3.5}orsmodel.updateMany},{$inc:{price:+10}})
         res.send({msg:increasedRating})
     }
 
