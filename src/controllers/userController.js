@@ -19,7 +19,7 @@ const loginUser = async function (req, res) {
   if (!user)
     return res.send({
       status: false,
-      msg: "username or the password is not corerct",
+      msg: "username or the password is not correct",
     });
 
   // Once the login is successful, create the jwt token with sign function
@@ -48,7 +48,7 @@ const getUserData = async function (req, res) {
   if (!token) return res.send({ status: false, msg: "token must be present" });
 
   console.log(token);
-  
+
   // If a token is present then decode the token with verify function
   // verify takes two inputs:
   // Input 1 is the token to be decoded
@@ -67,24 +67,38 @@ const getUserData = async function (req, res) {
 };
 
 const updateUser = async function (req, res) {
+  let usId = req.params.userId
+  let attribute = req.body
+  let update = await userModel.updateOne({ _id: usId }, { $set: { attribute } })
+  res.send(update)
+}
+
+const deleteUser = async function (req, res) {
+  let usId = req.params.userId
+  let deleted = await userModel.updateOne({ _id: usId }, { $set: { isDeleted: true } })
+  res.send(deleted)
+}
 // Do the same steps here:
 // Check if the token is present
 // Check if the token present is a valid token
 // Return a different error message in both these cases
 
-  let userId = req.params.userId;
-  let user = await userModel.findById(userId);
-  //Return an error if no user with the given id exists in the db
-  if (!user) {
-    return res.send("No such user exists");
-  }
 
-  let userData = req.body;
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-  res.send({ status: updatedUser, data: updatedUser });
+
+let userId = req.params.userId;
+let user = await userModel.findById(userId);
+//Return an error if no user with the given id exists in the db
+if (!user) {
+  return res.send("No such user exists");
+}
+
+let userData = req.body;
+let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
+res.send({ status: updatedUser, data: updatedUser });
 };
 
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
+module.exports.deleteUser = deleteUser;
