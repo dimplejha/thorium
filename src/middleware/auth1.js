@@ -6,7 +6,7 @@ const authenticate = function(req, req, next) {
 if (!token)token=req.headers["x-auth-token"]
 if(!token) return res.send({status:false,msg:"token must be present"})
 
-let decodedToken = jwt.verify(token, "shrati-marathi");
+let decodedToken = jwt.verify(token, "Dj");
     console.log(decodedToken)
     if (!decodedToken)
       return res.send({ status: false, msg: "token is invalid" });
