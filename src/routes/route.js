@@ -24,7 +24,7 @@ router.get("/test-me", function (req, res) {
 aws.config.update(
     {
         accessKeyId: "AKIAY3L35MCRVFM24Q7U",
-        secretAccessKeyId: "qGG1HE0qRixcW1T1Wg1bv+08tQrIkFVyDFqSft4J",
+        secretAccessKeyId: " ",
         region: "ap-south-1"
     }
 )
